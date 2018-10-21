@@ -148,7 +148,7 @@ class Print:
 
 conn = sqlite3.connect(sys.argv[2])
 cur = conn.cursor()
-script = open('.\scorelib.sql', encoding='utf8').read()
+script = open('scorelib.sql', encoding='utf8').read()
 cur.executescript(script)
 file = open(sys.argv[1], encoding="utf8")
 content = file.read()
