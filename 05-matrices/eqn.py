@@ -52,8 +52,15 @@ augmentedMatrixRank = numpy.linalg.matrix_rank(augmentedMatrix)
 
 if coefficientMatrixRank != augmentedMatrixRank:
     print('no solution')
+
 elif coefficientMatrixRank < len(variables):
-    print('solution space dimension: {0}'.format(len(variables) - len(leftSides)))
+    homogeneous = True
+    for constant in rightSides:
+        if constant != 0:
+            homogeneous = False
+    space = len(variables) - coefficientMatrixRank if homogeneous else len(variables) - len(leftSides)
+    print('solution space dimension: {0}'.format(space))
+
 else:
     result = numpy.linalg.solve(leftSides, rightSides)
     outputParts = []
