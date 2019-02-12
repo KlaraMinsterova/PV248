@@ -62,12 +62,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         try:
             valid_json = json.loads(data)
+
             if 'url' not in valid_json or (valid_json['type'] == 'POST' and 'content' not in valid_json):
                 raise ValueError()
 
-            type = 'GET' if not valid_json['type'] else valid_json['type']
-            timeout = 1 if not valid_json['timeout'] else valid_json['timeout']
-            headers = {} if not valid_json['headers'] else valid_json['headers']
+            type = 'GET' if 'type' not in valid_json else valid_json['type']
+            timeout = 1 if 'timeout' not in valid_json else valid_json['timeout']
+            headers = {} if 'headers' not in valid_json else valid_json['headers']
             url = valid_json['url'].replace('http://', '').replace('https://', '').split('/', 1)
             code = None
             content = None
@@ -79,7 +80,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     conn.request(type, '/' + url[-1], headers=headers)
                 else:
                     conn.request(type, '/', headers=headers)
-
                 response = conn.getresponse()
                 headers = response.getheaders()
                 code = response.status
